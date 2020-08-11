@@ -67,10 +67,10 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'TopAcesso',
-        'USER': 'sis_consulta',
-        'PASSWORD': '@Gsenha2018%%',
-        'HOST': 'utentagc-pto001\sqlexpress',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '',
 
         'OPTIONS': {
