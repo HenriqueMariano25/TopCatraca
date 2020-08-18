@@ -1,3 +1,10 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
@@ -30,8 +37,8 @@ class Arquivos(models.Model):
 
 
 class Arquivosinners(models.Model):
-    cod_arquivo = models.ForeignKey(Arquivos, models.DO_NOTHING, db_column='COD_ARQUIVO',related_name='arquinne_arqu')  # Field name made lowercase.
-    numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner',related_name='arquinne_inne')  # Field name made lowercase.
+    cod_arquivo = models.ForeignKey(Arquivos, models.DO_NOTHING, db_column='COD_ARQUIVO')  # Field name made lowercase.
+    numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -61,21 +68,24 @@ class Auditoria(models.Model):
 
 
 class Bilhetes(models.Model):
-    cod_pessoa = \
-        models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA',related_name='bilh_pess')  # Field name made lowercase.
-    cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True,related_name='bilh_locaaces')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
+    cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True)  # Field name made lowercase.
     tipo = models.SmallIntegerField(db_column='Tipo')  # Field name made lowercase.
-    numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner', blank=True, null=True,related_name='bilh_inne')  # Field name made lowercase.
-    datahora = models.DateTimeField(db_column='DataHora')  # Field name made lowercase.
+    numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner', blank=True, null=True, related_name='numinner')  # Field name made lowercase.
+    datahora = models.DateTimeField(db_column='DataHora', primary_key=True)  # Field name made lowercase.
     ordem = models.IntegerField(db_column='Ordem', blank=True, null=True)  # Field name made lowercase.
     exportado = models.SmallIntegerField(db_column='Exportado', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Bilhetes'
+        ordering = ['datahora']
 
+    def str_data(self):
+        return str(self.datahora)
 
-class Bilhetesinvalidos(models.Model): # Field name made lowercase.
+class Bilhetesinvalidos(models.Model):
+    id = models.AutoField(primary_key=True)
     numinner = models.SmallIntegerField(db_column='NumInner', blank=True, null=True)  # Field name made lowercase.
     tipo = models.SmallIntegerField(db_column='Tipo', blank=True, null=True)  # Field name made lowercase.
     datahora = models.DateTimeField(db_column='DataHora', blank=True, null=True)  # Field name made lowercase.
@@ -87,9 +97,9 @@ class Bilhetesinvalidos(models.Model): # Field name made lowercase.
 
 
 class Bilhetesoffline(models.Model):
-    numerocartao = models.ForeignKey('Cartoes', models.DO_NOTHING, db_column='NumeroCartao',related_name='bilhoffl_cart')  # Field name made lowercase.
-    cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True,related_name='bilhoffl_locaaces')  # Field name made lowercase.
-    numeroinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumeroInner',related_name='bilhoffl_inne')  # Field name made lowercase.
+    numerocartao = models.ForeignKey('Cartoes', models.DO_NOTHING, db_column='NumeroCartao')  # Field name made lowercase.
+    cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True)  # Field name made lowercase.
+    numeroinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumeroInner')  # Field name made lowercase.
     tipo = models.SmallIntegerField(db_column='Tipo', blank=True, null=True)  # Field name made lowercase.
     datahora = models.DateTimeField(db_column='DataHora')  # Field name made lowercase.
     ordem = models.IntegerField(db_column='Ordem')  # Field name made lowercase.
@@ -112,7 +122,7 @@ class Bilhetestemp(models.Model):
 
 class Cartoes(models.Model):
     num_cartao = models.CharField(db_column='NUM_CARTAO', primary_key=True, max_length=16)  # Field name made lowercase.
-    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA', blank=True, null=True,related_name='cart_pess')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA', blank=True, null=True)  # Field name made lowercase.
     codigodebarras = models.CharField(db_column='CodigoDeBarras', unique=True, max_length=20)  # Field name made lowercase.
     darbaixa = models.BooleanField(db_column='DarBaixa')  # Field name made lowercase.
     offline = models.BooleanField(db_column='Offline', blank=True, null=True)  # Field name made lowercase.
@@ -127,7 +137,7 @@ class Cartoes(models.Model):
 class Cartoesprovisorios(models.Model):
     cod_cartaoprovisorio = models.AutoField(db_column='COD_CARTAOPROVISORIO', primary_key=True)  # Field name made lowercase.
     numerocartao = models.CharField(db_column='NumeroCartao', max_length=16)  # Field name made lowercase.
-    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA',related_name='cartprov_pesso')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
     inicio = models.DateTimeField(db_column='Inicio')  # Field name made lowercase.
     fim = models.DateTimeField(db_column='Fim')  # Field name made lowercase.
 
@@ -201,7 +211,7 @@ class Configuracoesvisitantes(models.Model):
 class Departamentos(models.Model):
     cod_departamento = models.AutoField(db_column='COD_DEPARTAMENTO', primary_key=True)  # Field name made lowercase.
     descricao = models.CharField(db_column='Descricao', max_length=50)  # Field name made lowercase.
-    cod_empresa = models.ForeignKey('Empresas', models.DO_NOTHING, db_column='COD_EMPRESA',related_name='depa_empr')  # Field name made lowercase.
+    cod_empresa = models.ForeignKey('Empresas', models.DO_NOTHING, db_column='COD_EMPRESA',related_name="COD_EMPRESA")  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -233,7 +243,7 @@ class Eventos(models.Model):
     codigo = models.AutoField(db_column='Codigo', primary_key=True)  # Field name made lowercase.
     tipo = models.SmallIntegerField(db_column='Tipo')  # Field name made lowercase.
     datahora = models.DateTimeField(db_column='DataHora')  # Field name made lowercase.
-    cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True,related_name='event_locaaces')  # Field name made lowercase.
+    cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True)  # Field name made lowercase.
     observacao = models.CharField(db_column='Observacao', max_length=50, blank=True, null=True)  # Field name made lowercase.
     ninner = models.SmallIntegerField(db_column='nInner')  # Field name made lowercase.
 
@@ -254,7 +264,7 @@ class Feriados(models.Model):
 
 
 class Fotos(models.Model):
-    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA',related_name='foto_pess')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
     sequencia = models.IntegerField(db_column='Sequencia')  # Field name made lowercase.
     foto = models.BinaryField(db_column='Foto')  # Field name made lowercase.
     padrao = models.BooleanField(db_column='Padrao')  # Field name made lowercase.
@@ -267,9 +277,9 @@ class Fotos(models.Model):
 class Funcionarios(models.Model):
     cod_pessoa = models.OneToOneField('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA', primary_key=True)  # Field name made lowercase.
     nome = models.CharField(db_column='Nome', max_length=50)  # Field name made lowercase.
-    cod_departamento = models.ForeignKey(Departamentos, models.DO_NOTHING, db_column='COD_DEPARTAMENTO',related_name='func_depa')  # Field name made lowercase.
-    cod_zt = models.ForeignKey('Zonasdetempo', models.DO_NOTHING, db_column='COD_ZT',related_name='func_zonatemp')  # Field name made lowercase.
-    cod_perfil = models.ForeignKey('Perfisdeacesso', models.DO_NOTHING, db_column='COD_PERFIL',related_name='func_perfaces')  # Field name made lowercase.
+    cod_departamento = models.ForeignKey(Departamentos, models.DO_NOTHING, db_column='COD_DEPARTAMENTO')  # Field name made lowercase.
+    cod_zt = models.ForeignKey('Zonasdetempo', models.DO_NOTHING, db_column='COD_ZT')  # Field name made lowercase.
+    cod_perfil = models.ForeignKey('Perfisdeacesso', models.DO_NOTHING, db_column='COD_PERFIL')  # Field name made lowercase.
     ignorarrota = models.BooleanField(db_column='IgnorarRota')  # Field name made lowercase.
     ignorarantipassback = models.BooleanField(db_column='IgnorarAntiPassback')  # Field name made lowercase.
     ignorarentradas = models.BooleanField(db_column='IgnorarEntradas')  # Field name made lowercase.
@@ -315,7 +325,8 @@ class Funcoes(models.Model):
         db_table = 'Funcoes'
 
 
-class Historicosenhas(models.Model): # Field name made lowercase.
+class Historicosenhas(models.Model):
+    id = models.AutoField(primary_key=True)
     cod_pessoa = models.IntegerField(db_column='COD_PESSOA', blank=True, null=True)  # Field name made lowercase.
     senha = models.CharField(db_column='Senha', max_length=50, blank=True, null=True)  # Field name made lowercase.
     cripted = models.BooleanField(db_column='Cripted', blank=True, null=True)  # Field name made lowercase.
@@ -326,7 +337,7 @@ class Historicosenhas(models.Model): # Field name made lowercase.
 
 
 class Horariossirene(models.Model):
-    numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner',related_name='horasire_inne')  # Field name made lowercase.
+    numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner')  # Field name made lowercase.
     horario = models.DateTimeField(db_column='Horario')  # Field name made lowercase.
     diashabilitados = models.SmallIntegerField(db_column='DiasHabilitados')  # Field name made lowercase.
     desativada = models.BooleanField(db_column='Desativada')  # Field name made lowercase.
@@ -337,16 +348,16 @@ class Horariossirene(models.Model):
 
 
 class Inners(models.Model):
-    numero = models.SmallIntegerField(db_column='Numero', unique=True, blank=True, null=True)  # Field name made lowercase.
+    numero = models.AutoField(db_column='Numero', primary_key=True)  # Field name made lowercase.
     descricao = models.CharField(db_column='Descricao', unique=True, max_length=50)  # Field name made lowercase.
     leitor1habilitado = models.BooleanField(db_column='Leitor1Habilitado')  # Field name made lowercase.
-    leitor1local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor1Local', blank=True, null=True,related_name='leitor1local')  # Field name made lowercase.
-    leitor1acessoa = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor1AcessoA', blank=True, null=True,related_name='leitor1acessoa')  # Field name made lowercase.
+    leitor1local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor1Local', blank=True, null=True, related_name="leitor1local")  # Field name made lowercase.
+    leitor1acessoa = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor1AcessoA', blank=True, null=True,related_name="leitor1acesso")  # Field name made lowercase.
     leitor1porta = models.SmallIntegerField(db_column='Leitor1Porta', blank=True, null=True)  # Field name made lowercase.
     leitor1negavisitante = models.BooleanField(db_column='Leitor1NegaVisitante', blank=True, null=True)  # Field name made lowercase.
     leitor2habilitado = models.BooleanField(db_column='Leitor2Habilitado')  # Field name made lowercase.
-    leitor2local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor2Local', blank=True, null=True,related_name='leitor2local')  # Field name made lowercase.
-    leitor2acessoa = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor2AcessoA', blank=True, null=True,related_name='leitor2acessoa')  # Field name made lowercase.
+    leitor2local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor2Local', blank=True, null=True,related_name="leitor2local")  # Field name made lowercase.
+    leitor2acessoa = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='Leitor2AcessoA', blank=True, null=True,related_name="leitor2acessoa")  # Field name made lowercase.
     leitor2porta = models.SmallIntegerField(db_column='Leitor2Porta', blank=True, null=True)  # Field name made lowercase.
     leitor2negavisitante = models.BooleanField(db_column='Leitor2NegaVisitante', blank=True, null=True)  # Field name made lowercase.
     aceitateclado = models.BooleanField(db_column='AceitaTeclado')  # Field name made lowercase.
@@ -435,6 +446,7 @@ class Inners(models.Model):
     class Meta:
         managed = False
         db_table = 'Inners'
+        ordering = ['numero']
 
 
 class Intertravamentos(models.Model):
@@ -447,8 +459,8 @@ class Intertravamentos(models.Model):
 
 
 class Intertravamentosdados(models.Model):
-    cod_intertravamento = models.ForeignKey(Intertravamentos, models.DO_NOTHING, db_column='COD_INTERTRAVAMENTO', related_name='inttra_inttradados')  # Field name made lowercase.
-    numinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumInner', related_name='inttra_numinner')  # Field name made lowercase.
+    cod_intertravamento = models.ForeignKey(Intertravamentos, models.DO_NOTHING, db_column='COD_INTERTRAVAMENTO')  # Field name made lowercase.
+    numinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumInner')  # Field name made lowercase.
     porta = models.SmallIntegerField(db_column='Porta')  # Field name made lowercase.
 
     class Meta:
@@ -468,7 +480,7 @@ class Locaisdeacesso(models.Model):
 
 class Locaisdeacessoemails(models.Model):
     cod_email = models.AutoField(db_column='COD_EMAIL', primary_key=True)  # Field name made lowercase.
-    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL',related_name='locace_locaceemails')  # Field name made lowercase.
+    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL')  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=100)  # Field name made lowercase.
 
     class Meta:
@@ -477,8 +489,8 @@ class Locaisdeacessoemails(models.Model):
 
 
 class Locaisdeacessopermissoes(models.Model):
-    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL', related_name='locaceper_locace')  # Field name made lowercase.
-    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA', related_name='locaceper_pes')  # Field name made lowercase.
+    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -487,7 +499,7 @@ class Locaisdeacessopermissoes(models.Model):
 
 class Locaisrefeicao(models.Model):
     codlocal = models.OneToOneField(Locaisdeacesso, models.DO_NOTHING, db_column='CodLocal', primary_key=True)  # Field name made lowercase.
-    codrefeicao = models.ForeignKey('Refeicoes', models.DO_NOTHING, db_column='CodRefeicao',related_name='locref_ref')  # Field name made lowercase.
+    codrefeicao = models.ForeignKey('Refeicoes', models.DO_NOTHING, db_column='CodRefeicao')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -507,7 +519,7 @@ class Maquinasconectadas(models.Model):
 
 
 class Mensagens(models.Model):
-    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA',related_name='men_pes')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
     datahora = models.BooleanField(db_column='DataHora')  # Field name made lowercase.
     linha1 = models.CharField(db_column='Linha1', max_length=16, blank=True, null=True)  # Field name made lowercase.
     alinhamentol1 = models.SmallIntegerField(db_column='AlinhamentoL1', blank=True, null=True)  # Field name made lowercase.
@@ -541,9 +553,9 @@ class Perfisdeacesso(models.Model):
 
 
 class Perfisdeacessodados(models.Model):
-    cod_perfil = models.ForeignKey(Perfisdeacesso, models.DO_NOTHING, db_column='COD_PERFIL', related_name='perfacesdado_perfaces')  # Field name made lowercase.
-    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL', related_name='perfacesdado_locaaces')  # Field name made lowercase.
-    cod_zt = models.ForeignKey('Zonasdetempo', models.DO_NOTHING, db_column='COD_ZT', blank=True, null=True, related_name='perfacesdado_zonatemp')  # Field name made lowercase.
+    cod_perfil = models.ForeignKey(Perfisdeacesso, models.DO_NOTHING, db_column='COD_PERFIL')  # Field name made lowercase.
+    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL')  # Field name made lowercase.
+    cod_zt = models.ForeignKey('Zonasdetempo', models.DO_NOTHING, db_column='COD_ZT', blank=True, null=True)  # Field name made lowercase.
     numentradas = models.IntegerField(db_column='NumEntradas', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -552,9 +564,9 @@ class Perfisdeacessodados(models.Model):
 
 
 class Perfisdeacessoexcecao(models.Model):
-    cod_pessoa = models.ForeignKey(Funcionarios, models.DO_NOTHING, db_column='COD_PESSOA',related_name='perfacesexce_func')  # Field name made lowercase.
-    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL',related_name='perfacesexce_locaaces')  # Field name made lowercase.
-    cod_zt = models.ForeignKey('Zonasdetempo', models.DO_NOTHING, db_column='COD_ZT', blank=True, null=True,related_name='perfacesexce_zonatemp')  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey(Funcionarios, models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
+    cod_local = models.ForeignKey(Locaisdeacesso, models.DO_NOTHING, db_column='COD_LOCAL')  # Field name made lowercase.
+    cod_zt = models.ForeignKey('Zonasdetempo', models.DO_NOTHING, db_column='COD_ZT', blank=True, null=True)  # Field name made lowercase.
     numentradas = models.IntegerField(db_column='NumEntradas', blank=True, null=True)  # Field name made lowercase.
     inicio = models.DateTimeField(db_column='Inicio')  # Field name made lowercase.
     fim = models.DateTimeField(db_column='Fim')  # Field name made lowercase.
@@ -621,7 +633,7 @@ class Renomear(models.Model):
 
 class Templateshamster(models.Model):
     cod_template = models.AutoField(db_column='COD_TEMPLATE', primary_key=True)  # Field name made lowercase.
-    numinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumInner',related_name='temphams')  # Field name made lowercase.
+    numinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumInner')  # Field name made lowercase.
     usuario = models.CharField(db_column='Usuario', max_length=16)  # Field name made lowercase.
     template = models.CharField(db_column='Template', max_length=844, blank=True, null=True)  # Field name made lowercase.
     template2 = models.CharField(db_column='Template2', max_length=844, blank=True, null=True)  # Field name made lowercase.
@@ -634,7 +646,7 @@ class Templateshamster(models.Model):
 
 class Templateshamstercama(models.Model):
     cod_template = models.AutoField(db_column='COD_TEMPLATE', primary_key=True)  # Field name made lowercase.
-    numinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumInner', blank=True, null=True,related_name='temphamscama')  # Field name made lowercase.
+    numinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumInner', blank=True, null=True)  # Field name made lowercase.
     usuario = models.CharField(db_column='Usuario', max_length=16, blank=True, null=True)  # Field name made lowercase.
     template = models.CharField(db_column='Template', max_length=1000, blank=True, null=True)  # Field name made lowercase.
     template2 = models.CharField(db_column='Template2', max_length=1000, blank=True, null=True)  # Field name made lowercase.
@@ -646,6 +658,7 @@ class Templateshamstercama(models.Model):
 
 
 class Trilhaauditoria(models.Model):
+    id = models.AutoField(primary_key=True)
     tpevento = models.CharField(db_column='TPEVENTO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     cod_pessoa = models.CharField(db_column='COD_PESSOA', max_length=10, blank=True, null=True)  # Field name made lowercase.
     nome = models.CharField(db_column='NOME', max_length=50, blank=True, null=True)  # Field name made lowercase.
@@ -660,6 +673,7 @@ class Trilhaauditoria(models.Model):
 
 
 class Trilhaauditoriaacessosnegados(models.Model):
+    id = models.AutoField(primary_key=True)
     tpevento = models.CharField(db_column='TPEVENTO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     cod_pessoa = models.CharField(db_column='COD_PESSOA', max_length=50, blank=True, null=True)  # Field name made lowercase.
     nome = models.CharField(db_column='NOME', max_length=50, blank=True, null=True)  # Field name made lowercase.
@@ -676,7 +690,7 @@ class Trilhaauditoriaacessosnegados(models.Model):
 
 class Usuariosbio(models.Model):
     codigo = models.AutoField(db_column='Codigo', primary_key=True)  # Field name made lowercase.
-    cartao = models.ForeignKey(Cartoes, models.DO_NOTHING, db_column='Cartao',related_name='usuabio_cart')  # Field name made lowercase.
+    cartao = models.ForeignKey(Cartoes, models.DO_NOTHING, db_column='Cartao')  # Field name made lowercase.
     senha = models.CharField(db_column='Senha', max_length=16, blank=True, null=True)  # Field name made lowercase.
     master = models.CharField(db_column='Master', max_length=1, blank=True, null=True)  # Field name made lowercase.
     template1 = models.CharField(db_column='Template1', max_length=404)  # Field name made lowercase.
@@ -690,7 +704,7 @@ class Usuariosbio(models.Model):
 
 class Usuariosbiocama(models.Model):
     codigo = models.AutoField(db_column='Codigo', primary_key=True)  # Field name made lowercase.
-    cartao = models.ForeignKey(Cartoes, models.DO_NOTHING, db_column='Cartao', blank=True, null=True,related_name='usuabiocama_cart')  # Field name made lowercase.
+    cartao = models.ForeignKey(Cartoes, models.DO_NOTHING, db_column='Cartao', blank=True, null=True)  # Field name made lowercase.
     senha = models.CharField(db_column='Senha', max_length=16, blank=True, null=True)  # Field name made lowercase.
     master = models.CharField(db_column='Master', max_length=1, blank=True, null=True)  # Field name made lowercase.
     template1 = models.CharField(db_column='Template1', max_length=1000, blank=True, null=True)  # Field name made lowercase.
@@ -703,8 +717,8 @@ class Usuariosbiocama(models.Model):
 
 
 class Usuariosespecificosbio(models.Model):
-    codigousuario = models.ForeignKey(Usuariosbio, models.DO_NOTHING, db_column='CodigoUsuario',related_name='usuaespebio_usuabio')  # Field name made lowercase.
-    numeroinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumeroInner',related_name='usuaespebio_inne')  # Field name made lowercase.
+    codigousuario = models.ForeignKey(Usuariosbio, models.DO_NOTHING, db_column='CodigoUsuario')  # Field name made lowercase.
+    numeroinner = models.ForeignKey(Inners, models.DO_NOTHING, db_column='NumeroInner')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -743,7 +757,7 @@ class Visitantes(models.Model):
 
 class Visitas(models.Model):
     cod_visita = models.AutoField(db_column='COD_VISITA', primary_key=True)  # Field name made lowercase.
-    cod_visitante = models.ForeignKey(Visitantes, models.DO_NOTHING, db_column='COD_VISITANTE', blank=True, null=True,related_name='visi_visitantes')  # Field name made lowercase.
+    cod_visitante = models.ForeignKey(Visitantes, models.DO_NOTHING, db_column='COD_VISITANTE', blank=True, null=True)  # Field name made lowercase.
     validade_inicio = models.DateTimeField(db_column='VALIDADE_INICIO', blank=True, null=True)  # Field name made lowercase.
     validade_fim = models.DateTimeField(db_column='VALIDADE_FIM', blank=True, null=True)  # Field name made lowercase.
     cod_visitado = models.IntegerField(db_column='COD_VISITADO', blank=True, null=True)  # Field name made lowercase.
@@ -764,7 +778,7 @@ class Zonasdetempo(models.Model):
 
 
 class Zonasdetempodados(models.Model):
-    cod_zt = models.ForeignKey(Zonasdetempo, models.DO_NOTHING, db_column='COD_ZT',related_name='zonatempdado_zonatemp')  # Field name made lowercase.
+    cod_zt = models.ForeignKey(Zonasdetempo, models.DO_NOTHING, db_column='COD_ZT')  # Field name made lowercase.
     inicio = models.DateTimeField(db_column='Inicio')  # Field name made lowercase.
     fim = models.DateTimeField(db_column='Fim')  # Field name made lowercase.
     seg = models.BooleanField(db_column='Seg')  # Field name made lowercase.
@@ -782,8 +796,8 @@ class Zonasdetempodados(models.Model):
 
 
 class Zonasdetempopermissoes(models.Model):
-    cod_zt = models.ForeignKey(Zonasdetempo, models.DO_NOTHING, db_column='COD_ZT', blank=True, null=True,related_name='zonatempperm_zonatemp')  # Field name made lowercase.
-    cod_pessoa = models.ForeignKey(Pessoas, models.DO_NOTHING, db_column='COD_PESSOA', blank=True, null=True,related_name='zonatempperm_pess')  # Field name made lowercase.
+    cod_zt = models.ForeignKey(Zonasdetempo, models.DO_NOTHING, db_column='COD_ZT', blank=True, null=True)  # Field name made lowercase.
+    cod_pessoa = models.ForeignKey(Pessoas, models.DO_NOTHING, db_column='COD_PESSOA', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
