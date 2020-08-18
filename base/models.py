@@ -68,19 +68,21 @@ class Auditoria(models.Model):
 
 
 class Bilhetes(models.Model):
-    id = models.AutoField(primary_key=True)
     cod_pessoa = models.ForeignKey('Pessoas', models.DO_NOTHING, db_column='COD_PESSOA')  # Field name made lowercase.
     cod_local = models.ForeignKey('Locaisdeacesso', models.DO_NOTHING, db_column='COD_LOCAL', blank=True, null=True)  # Field name made lowercase.
     tipo = models.SmallIntegerField(db_column='Tipo')  # Field name made lowercase.
     numinner = models.ForeignKey('Inners', models.DO_NOTHING, db_column='NumInner', blank=True, null=True, related_name='numinner')  # Field name made lowercase.
-    datahora = models.DateTimeField(db_column='DataHora')  # Field name made lowercase.
+    datahora = models.DateTimeField(db_column='DataHora', primary_key=True)  # Field name made lowercase.
     ordem = models.IntegerField(db_column='Ordem', blank=True, null=True)  # Field name made lowercase.
     exportado = models.SmallIntegerField(db_column='Exportado', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Bilhetes'
+        ordering = ['datahora']
 
+    def str_data(self):
+        return str(self.datahora)
 
 class Bilhetesinvalidos(models.Model):
     id = models.AutoField(primary_key=True)
@@ -209,7 +211,7 @@ class Configuracoesvisitantes(models.Model):
 class Departamentos(models.Model):
     cod_departamento = models.AutoField(db_column='COD_DEPARTAMENTO', primary_key=True)  # Field name made lowercase.
     descricao = models.CharField(db_column='Descricao', max_length=50)  # Field name made lowercase.
-    cod_empresa = models.ForeignKey('Empresas', models.DO_NOTHING, db_column='COD_EMPRESA')  # Field name made lowercase.
+    cod_empresa = models.ForeignKey('Empresas', models.DO_NOTHING, db_column='COD_EMPRESA',related_name="COD_EMPRESA")  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -444,6 +446,7 @@ class Inners(models.Model):
     class Meta:
         managed = False
         db_table = 'Inners'
+        ordering = ['numero']
 
 
 class Intertravamentos(models.Model):
